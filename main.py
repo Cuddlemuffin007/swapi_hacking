@@ -17,10 +17,16 @@ def print_all_data_list(url, key):
     next_url = get_json_response(base_url).get('next')
 
     print_data_list(get_json_response(base_url), key)
-    while next_url:
-        current_url = next_url
-        print_data_list(get_json_response(current_url), key)
-        next_url = get_json_response(current_url).get('next')
+    next_results = input("Press ENTER to see the next page of results or enter 'q' to quit\n>> ")
+    if not next_results:
+        while next_url:
+            if not next_results:
+                current_url = next_url
+                print_data_list(get_json_response(current_url), key)
+                next_results = input("Press ENTER to see the next page of results or enter 'q' to quit\n>> ")
+                next_url = get_json_response(current_url).get('next')
+            else:
+                return None
 
 
 def print_data_list(json_response, key):
