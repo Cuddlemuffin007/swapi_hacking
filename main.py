@@ -49,29 +49,34 @@ def print_person_result(result_dict):
     attributes = ['name', 'height', 'mass', 'hair_color', 'skin_color',
             'eye_color', 'birth_year']
     related_attribute_urls = ['species', 'films', 'vehicles', 'starships']
-    for attribute in attributes:
-        print("{}: {}".format(attribute, result_dict[attribute]))
+    try:
+        for attribute in attributes:
+                print("{}: {}".format(attribute, result_dict[attribute]))
 
-    for related_attribute_url in related_attribute_urls:
-        print('\n{}:'.format(related_attribute_url.capitalize()))
-        for url in result_dict[related_attribute_url]:
-            if related_attribute_url == 'films':
-                key = 'title'
-            else:
-                key = 'name'
-            print(get_json_response(url).get(key))
+        for related_attribute_url in related_attribute_urls:
+            print('\n{}:'.format(related_attribute_url.capitalize()))
+            for url in result_dict[related_attribute_url]:
+                if related_attribute_url == 'films':
+                    key = 'title'
+                else:
+                    key = 'name'
+                print(get_json_response(url).get(key))
+    except TypeError:
+        print("Didn't find what you were looking for?\nRemember, queries are case-sensitive and may contain spaces for full names.")
 
 
 def print_film_result(result_dict):
-    attributes = ['title', 'episode_id', 'opening_crawl', 'director',
-            'producer', 'release_date']
+    attributes = ['title', 'episode_id', 'opening_crawl', 'director', 'producer', 'release_date']
 
-    for attribute in attributes:
-        print("\n{}: {}".format(attribute, result_dict[attribute]))
+    try:
+        for attribute in attributes:
+            print("\n{}: {}".format(attribute, result_dict[attribute]))
 
-    print("\nMain Characters:\n")
-    for char_url in result_dict['characters'][0:3]:
-        print(get_json_response(char_url).get('name'))
+        print("\nMain Characters:\n")
+        for char_url in result_dict['characters'][0:3]:
+            print(get_json_response(char_url).get('name'))
+    except TypeError:
+        print("Didn't find what you were looking for?\nRemember, queries are case-sensitive and may contain spaces for full names.")
 
 
 def print_vehicle_result(result_dict):
@@ -79,8 +84,12 @@ def print_vehicle_result(result_dict):
             'length', 'max_atmosphering_speed', 'crew', 'passengers',
             'cargo_capacity', 'consumables', 'vehicle_class']
 
-    for attribute in attributes:
-        print("{}: {}".format(attribute, result_dict[attribute]))
+    try:
+        for attribute in attributes:
+            print("{}: {}".format(attribute, result_dict[attribute]))
+    except TypeError:
+        print("Didn't find what you were looking for?\nRemember, queries are case-sensitive and may contain spaces for full names.")
+
 
 print('\nWelcome to the StarWars API CL project.\n')
 
@@ -102,7 +111,6 @@ Enter 'vehicles' for a list of vehicles in the Star Wars Universe\n>> """)
                 print_person_result(result)
             else:
                 json_response = get_json_response(url)
-#                print_data_list(json_response, key)
                 print_all_data_list(url, key)
         elif choice == 'vehicles':
             vehicle_name = input("If you would like to search for a specific vehicle, enter the name now. Press ENTER for list view.\n>> ")
@@ -123,5 +131,4 @@ Enter 'vehicles' for a list of vehicles in the Star Wars Universe\n>> """)
     else:
         print('Please enter a valid choice')
         continue
-
 
